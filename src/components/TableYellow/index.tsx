@@ -1,5 +1,8 @@
+import { Button } from '@chakra-ui/button';
 import { Image } from '@chakra-ui/image';
-import { Flex, Text, VStack } from '@chakra-ui/layout';
+import { Flex, Stack, Text, VStack } from '@chakra-ui/layout';
+import Router from 'next/router';
+import React from 'react';
 import IContact from '../../types/IContact';
 
 interface ITableYellowInputProps {
@@ -7,21 +10,13 @@ interface ITableYellowInputProps {
 }
 
 export default function TableYellow({data}:ITableYellowInputProps){
-  const property = {
-    imageUrl: 'https://bit.ly/2Z4KKcF',
-    imageAlt: 'Rear view of modern home with pool',
-    beds: 3,
-    baths: 2,
-    title: 'Modern home in city center in the heart of historic Los Angeles',
-    formattedPrice: '$1,900.00',
-    reviewCount: 34,
-    rating: 4,
-  }
+
   return(
     <>
       {data.map((item,index)=>(
 
       <Flex h={["min"]}  w="850px" borderRadius={8} borderWidth={1} m = {4} key = {item._id}>
+        
         <Image   w="100%"
           maxW="200px"
           h="100%"
@@ -37,7 +32,13 @@ export default function TableYellow({data}:ITableYellowInputProps){
           <Text  fontWeight="bold" >{item.name}</Text>
           <Text>Address: {item.address}</Text>
           <Text>Birthday: {item.birthday.split("T")[0] }</Text>
-          <Text>Phone: {item.phone_number}</Text>         
+          <Text>Phone: {item.phone_number}</Text>               
+            <Stack spacing = {4} isInline  >             
+                <Button variant="solid" bg="green" onClick = {()=>{
+                  Router.push({ pathname:'/yellowupdate',query:item})
+                }} >Editar</Button>             
+                <Button variant="solid" bg="red" >Excluir</Button>             
+            </Stack>             
         </VStack>
       </Flex>
 
