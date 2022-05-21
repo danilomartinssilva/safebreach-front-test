@@ -42,8 +42,6 @@ const  YellowList:NextPage=()=>{
           {contacts?.length && (
               <TableYellow data = {contacts} />
           )}
-
-         
         </Flex>
       </Flex>
     </Flex>

@@ -35,7 +35,7 @@ export default function TableYellow({data}:ITableYellowInputProps){
           <Text>Phone: {item.phone_number}</Text>               
             <Stack spacing = {4} isInline  >             
                 <Button variant="solid" bg="green" onClick = {()=>{
-                  Router.push({ pathname:'/yellowupdate',query:item})
+                  Router.push({ pathname:'/yellowupdate',query:{_id:item._id}})
                 }} >Editar</Button>             
                 <Button variant="solid" bg="red" >Excluir</Button>             
             </Stack>             
