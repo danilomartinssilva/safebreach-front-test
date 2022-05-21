@@ -74,11 +74,11 @@ export function SearchBox(act:ISearchBoxInputProps) {
         {(props)=>(
           <Form style= {{ display:"flex", justifyContent:"space-between",width:"820px"}}>
             <Field name="query"  >
-            {({field,form})=>(
+            {(form:any)=>(
               <FormControl display="flex" >                
                 <Input
                   
-                  {...field}
+                  {...form.field}
                   color="gray.50"
                   id="query"                  
                   variant="unstyled"
@@ -97,7 +97,7 @@ export function SearchBox(act:ISearchBoxInputProps) {
             )}
             </Field>
             
-            <Button isLoading = {act.loading} variant="unstyled" type="submit">
+            <Button id="btnSubmitSearch" isLoading = {act.loading} variant="unstyled" type="submit">
               {!act.loading && (
 
                 <Icon as={RiSearchLine} fontSize="20" />

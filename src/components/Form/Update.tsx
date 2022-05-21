@@ -78,6 +78,7 @@ export default function FormUpdateContact({contact,onSubmit,fetchLoading,updateL
           <Text color = "red" > {errors?.phone?.message}</Text>          
       </FormControl>    
     <Button
+    id="buttonUpdateSubmit"
      maxW="850px" 
      isLoading = {updateLoading}
      loadingText="Sending"

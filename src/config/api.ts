@@ -1,8 +1,9 @@
 import axios from "axios";
 
-console.log(process.env.API_URL)
+
+console.log('**',process.env.API_URL)
 const instance = axios.create({
-  baseURL:"http://192.168.3.15:3339/api/v1",
+  baseURL:process.env.API_URL,
   timeout:1000  
 })
 
