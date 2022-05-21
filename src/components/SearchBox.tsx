@@ -6,6 +6,7 @@ import IContactQuery from '../types/IContactQuery';
 
 interface ISearchBoxInputProps  {
   handleSubmit:(query:IContactQuery)=>void
+  loading:boolean;
 
 }
 
@@ -74,8 +75,7 @@ export function SearchBox(act:ISearchBoxInputProps) {
           <Form style= {{ display:"flex", justifyContent:"space-between",width:"820px"}}>
             <Field name="query"  >
             {({field,form})=>(
-              <FormControl display="flex" >
-                
+              <FormControl display="flex" >                
                 <Input
                   
                   {...field}
@@ -90,16 +90,18 @@ export function SearchBox(act:ISearchBoxInputProps) {
                   }}
                   value={props.values.query}     
                   name="query"   
-                  onChange={props.handleChange}
-                  testId="query"
+                  onChange={props.handleChange}                 
                 />
             </FormControl>
 
             )}
             </Field>
-         
-            <Button variant="unstyled" type="submit">
+            
+            <Button isLoading = {act.loading} variant="unstyled" type="submit">
+              {!act.loading && (
+
                 <Icon as={RiSearchLine} fontSize="20" />
+              )}
             </Button>  
           </Form>
         )}

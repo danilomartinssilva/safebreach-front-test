@@ -7,9 +7,10 @@ import IContact from '../../types/IContact';
 
 interface ITableYellowInputProps {
   data:IContact[]
+  removeContact:(id:string)=>void;
 }
 
-export default function TableYellow({data}:ITableYellowInputProps){
+export default function TableYellow({data,removeContact}:ITableYellowInputProps){
 
   return(
     <>
@@ -34,10 +35,10 @@ export default function TableYellow({data}:ITableYellowInputProps){
           <Text>Birthday: {item.birthday.split("T")[0] }</Text>
           <Text>Phone: {item.phone_number}</Text>               
             <Stack spacing = {4} isInline  >             
-                <Button variant="solid" bg="green" onClick = {()=>{
+                <Button id="updateContact" variant="solid" bg="green" onClick = {()=>{
                   Router.push({ pathname:'/yellowupdate',query:{_id:item._id}})
                 }} >Editar</Button>             
-                <Button variant="solid" bg="red" >Excluir</Button>             
+                <Button id="removeContact" variant="solid" bg="red" onClick = {()=>removeContact(item._id)} >Excluir</Button>             
             </Stack>             
         </VStack>
       </Flex>

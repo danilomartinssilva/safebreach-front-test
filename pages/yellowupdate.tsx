@@ -1,109 +1,99 @@
-import { Button } from "@chakra-ui/button";
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Input } from "@chakra-ui/input";
-import { Heading, Stack, Text, VStack } from "@chakra-ui/layout";
-import { yupResolver } from '@hookform/resolvers/yup';
-import axios from "axios";
-import { format, parseISO } from 'date-fns';
+import { Flex, Heading, VStack } from "@chakra-ui/layout";
+import { useToast } from "@chakra-ui/toast";
 import { NextPage } from "next";
 import Router, { useRouter, withRouter } from 'next/router';
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import * as Yup from 'yup';
+import Lottie from "react-lottie-player";
+import loadingJson from '../src/assets/animations/loading.json';
+import FormUpdateContact from "../src/components/Form/Update";
+import api from '../src/config/api';
 import IContact from "../src/types/IContact";
-
+import later from "../src/utils/later";
 
 const  YellowUpdate:NextPage=()=>{
-  const validationSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    birthday:Yup.date().required('Birthday is required'),
-    address: Yup.string()
-      .required('Address is required').min(10),
-    phone:Yup.string().required("Phone is required"),      
-  });
+ 
 
   const [contact,setContact] = useState<IContact>()
+  const [fetchLoading,setFetchLoading] = useState<boolean>(true)
+  const [updateLoading,setUpdateLoading] = useState<boolean>(false)
   const {query} = useRouter()
   const userId = query as Pick<IContact,"_id">  
-  const {register,handleSubmit,reset, formState:{errors}} = useForm({
-    resolver:yupResolver(validationSchema),
-  
-  })
+  const toast = useToast()
 
   useEffect(()=>{
     async function findById(){
+      setFetchLoading(true)
+      await later(4000)
     
       if(userId){
-        const request = await axios.get('http://192.168.3.15:3339/api/v1/users/'+userId._id)
+        const request = await api.get(`users/${userId._id}`);
+        setFetchLoading(false)
         const response = request.data
-        setContact(response)
-        reset(contact)
+      
+        setContact(response)     
       }
     }
     findById()
 
   },[userId._id])
 
+
+  const renderSkeletonLoading = ()=>{
+    return (
+      <Flex h="100vh" justifyContent="center" >
+        <Lottie
+        loop
+        animationData={loadingJson}
+        play
+        style={{ width: "100%", height: "100%" }}
+      />
+      </Flex>
+    )
+  }
   const onSubmit =async (data:any) => {
-    const request = await axios.put('http://192.168.3.15:3339/api/v1/users/',{
+    setUpdateLoading(true)
+    await later(2000)
+    const request = await api.put('/users',{
       data:{ ...data,_id:contact?._id}
     })
     const response = request.data
     setContact(response)
+    setUpdateLoading(false)
+    toast({
+      title: 'Updated Contact...',
+      description: "A contact has been updated by you",
+      status: 'success',
+      duration: 2000,
+      position: "top-right"
+     
+    })
+    await later(2000)
     Router.push({pathname:"/yellowlist"})
   } 
     return (
       
+     <>
+     {fetchLoading ? renderSkeletonLoading() :(
+
       <VStack as="form"    
-      mx="auto"
-      my="16px"
-      maxW="850px"
-      h="100vh"
-      justifyContent="flex-start"
-      >
-        <Heading> Update Contact </Heading>
-              <Stack maxW="850px" w={["xs","container.xl"]} spacing={4}>
-                <FormControl>
-                  <FormLabel>Name</FormLabel>
-                  <Input  id="name" placeholder="enter your name..." 
-                  defaultValue = {contact?.name}
-                  {...register("name")}
-
-                  />
-                  <Text color = "red" > {errors?.name?.message}</Text>              
-                </FormControl>  
-                {contact?.birthday && (              
-                  <FormControl>
-                    <FormLabel>Birthday</FormLabel>
-                    <Input  id="birthday" placeholder="enter your birthday..." type="text" 
-                    defaultValue = {format(parseISO(contact?.birthday?.split('T')[0] as string).getTime(),"yyyy-MM-dd")}
-                    {...register("birthday")}
-
-                    />    
-                            
-                  </FormControl>    
-                )}  
-
-                  <FormControl>
-                    <FormLabel>Address</FormLabel>
-                    <Input  id="address" placeholder="enter your address..." type="text" 
-                    defaultValue = {contact?.address}
-                    {...register("address")}
-                    />       
-                    <Text color = "red" > {errors?.address?.message}</Text>                    
-                  </FormControl>    
-                  <FormControl>
-                    <FormLabel>Phone</FormLabel>
-                    <Input  id="phone" placeholder="enter your phone..." type="tel" 
-                    defaultValue = {contact?.phone_number}
-                    {...register("phone")}
-
-                    />      
-                      <Text color = "red" > {errors?.phone?.message}</Text>          
-                  </FormControl>    
-                <Button maxW="850px" bg="green" isDisabled = {Boolean(Object.keys(errors).length)} onClick = {handleSubmit(onSubmit)}> Send  </Button>
-              </Stack>        
+        mx="auto"
+        my="16px"
+        maxW="850px"
+        h="100vh"
+        justifyContent="flex-start"
+        >     
+        <Heading> Update Contact </Heading>          
+          <FormUpdateContact 
+          updateLoading = {updateLoading}
+          fetchLoading = {fetchLoading} 
+          contact = {contact} 
+          onSubmit = {onSubmit}  />
       </VStack>
+     )}
+    
+
+     </> 
+    
     )
 }
 
