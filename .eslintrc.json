@@ -37,9 +37,19 @@
     ],
     "no-use-before-define": "off",
     "@typescript-eslint/no-use-before-define": [
-        "error"
+        "warn"
     ],
     "react/react-in-jsx-scope": "off",
+    "react/jsx-props-no-spreading":"warn",
+   
+    "react/jsx-no-useless-fragment":"warn",
+    "react/require-default-props":"warn",
+    "import/prefer-default-export": "off",
+    "react/function-component-definition":"off",
+    "no-dupe-else-if":"off",
+    "Missing radix parameter":"off",
+    "no-underscore-dangle":"warn",
+    "react/jsx-no-bind":"warn",
     "import/extensions": [
         "error",
         "ignorePackages",

@@ -1,9 +1,7 @@
-type IContactQuery={
- 
-  phone?:any[] ,
-  name?:any[] ,
-  address?:any[] ,
-  birthday?:any[]
- 
-}
-export default IContactQuery
+type IContactQuery = {
+  phone?: string[];
+  name?: string[];
+  address?: string[];
+  birthday?: string[];
+};
+export default IContactQuery;
