@@ -10,7 +10,7 @@ npm run dev
 yarn dev
 ```
 
-Open [https://safebreach-front-test.vercel.app/]([http://localhost:3000](https://safebreach-front-test.vercel.app/)) with your browser to see the result.
+Open [https://safebreach-front-test.vercel.app/yellowlist]([[http://localhost:3000](https://safebreach-front-test.vercel.app/yellowlist)](https://safebreach-front-test.vercel.app/)) with your browser to see the result.
 
 
 ## Deploy on Vercel
